@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/constants/color_constants.dart';
 import '../../../providers/app_providers.dart';
 import '../../widgets/loading_overlay.dart';
@@ -25,7 +26,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     // Using simple dashboard state for now
     // final dashboardState = ref.watch(dashboardControllerProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),
@@ -74,9 +75,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         minWidth: 12,
                         minHeight: 12,
                       ),
-                      child: Text(
+                      child: const Text(
                         '2', // '${dashboardState.activeAlerts.length}' - mock for demo
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 8,
                         ),
@@ -141,7 +142,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget _buildDashboardView() {
     final user = ref.watch(currentUserProvider);
     // final dashboardState = ref.watch(dashboardControllerProvider); // Commented out for demo
-    
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -204,9 +205,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // Quick Actions
           const Text(
             'Quick Actions',
@@ -216,9 +217,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               color: AppColors.textPrimary,
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
@@ -248,9 +249,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 12),
-          
+
           Row(
             children: [
               Expanded(
@@ -278,9 +279,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // Nearby Buses
           const Text(
             'Nearby Buses',
@@ -290,9 +291,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               color: AppColors.textPrimary,
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           if (false) // dashboardState.nearbyBuses.isEmpty - mock to show buses
             Container(
               padding: const EdgeInsets.all(20),
@@ -336,7 +337,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 // final bus = dashboardState.nearbyBuses[index]; - using mock data
                 final mockBuses = [
                   {'name': 'Bus Route 42', 'eta': '5 min', 'status': 'On Time'},
-                  {'name': 'Express Line A', 'eta': '8 min', 'status': 'Delayed'},
+                  {
+                    'name': 'Express Line A',
+                    'eta': '8 min',
+                    'status': 'Delayed'
+                  },
                   {'name': 'City Loop 3', 'eta': '12 min', 'status': 'On Time'},
                 ];
                 final bus = mockBuses[index];
@@ -443,7 +448,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  bus['name'] ?? 'Unknown Bus', // 'Bus ${bus.busNumber}' - updated for mock data
+                  bus['name'] ??
+                      'Unknown Bus', // 'Bus ${bus.busNumber}' - updated for mock data
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -500,7 +506,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Emergency Alert'),
-        content: const Text('Are you sure you want to send an emergency alert?'),
+        content:
+            const Text('Are you sure you want to send an emergency alert?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -514,7 +521,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               //   type: 'PANIC',
               //   description: 'Emergency reported from dashboard',
               // );
-              
+
               // Show success message for demo
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Emergency alert sent!')),
