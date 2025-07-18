@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseService {
   static FirebaseService? _instance;
@@ -20,6 +21,9 @@ class FirebaseService {
   late FirebaseMessaging _messaging;
   late FirebaseAnalytics _analytics;
 
+  // Google Sign In
+  late GoogleSignIn _googleSignIn;
+
   // Stream controllers
   final StreamController<User?> _authStateController =
       StreamController<User?>.broadcast();
@@ -30,6 +34,7 @@ class FirebaseService {
   FirebaseStorage get storage => _storage;
   FirebaseMessaging get messaging => _messaging;
   FirebaseAnalytics get analytics => _analytics;
+  GoogleSignIn get googleSignIn => _googleSignIn;
 
   Stream<User?> get authStateChanges => _authStateController.stream;
   User? get currentUser => _auth.currentUser;
@@ -38,8 +43,8 @@ class FirebaseService {
   /// Initialize Firebase services
   Future<bool> initialize() async {
     try {
-      // Initialize Firebase Core
-      await Firebase.initializeApp();
+      // Initialize Firebase Core (already done in main.dart)
+      // await Firebase.initializeApp();
 
       // Initialize services
       _auth = FirebaseAuth.instance;
@@ -48,6 +53,11 @@ class FirebaseService {
       _messaging = FirebaseMessaging.instance;
       _analytics = FirebaseAnalytics.instance;
 
+      // Initialize Google Sign In
+      _googleSignIn = GoogleSignIn(
+        scopes: ['email', 'profile'],
+      );
+
       // Set up auth state listener
       _auth.authStateChanges().listen((User? user) {
         _authStateController.add(user);
@@ -55,6 +65,9 @@ class FirebaseService {
 
       // Configure Firestore settings
       await _configureFirestore();
+
+      // Request messaging permissions
+      await _requestMessagingPermissions();
 
       return true;
     } catch (e) {
@@ -73,6 +86,32 @@ class FirebaseService {
       );
     } catch (e) {
       print('Firestore configuration error: $e');
+    }
+  }
+
+  /// Request messaging permissions
+  Future<void> _requestMessagingPermissions() async {
+    try {
+      NotificationSettings settings = await _messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print('User granted permission');
+      } else if (settings.authorizationStatus ==
+          AuthorizationStatus.provisional) {
+        print('User granted provisional permission');
+      } else {
+        print('User declined or has not accepted permission');
+      }
+    } catch (e) {
+      print('Failed to request messaging permissions: $e');
     }
   }
 
@@ -114,6 +153,47 @@ class FirebaseService {
     }
   }
 
+  /// Sign in with Google
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        throw FirebaseException('Google sign-in was cancelled');
+      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the Google credential
+      final userCredential = await _auth.signInWithCredential(credential);
+
+      await _analytics.logLogin(loginMethod: 'google');
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw FirebaseException('Google sign-in failed: $e');
+    }
+  }
+
+  /// Sign out from Google
+  Future<void> signOutGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+    } catch (e) {
+      print('Google sign out failed: $e');
+    }
+  }
+
   /// Send password reset email
   Future<void> sendPasswordResetEmail(String email) async {
     try {
@@ -128,6 +208,11 @@ class FirebaseService {
   /// Sign out
   Future<void> signOut() async {
     try {
+      // Sign out from Google if signed in
+      if (await _googleSignIn.isSignedIn()) {
+        await _googleSignIn.signOut();
+      }
+
       await _auth.signOut();
       await _analytics.logEvent(name: 'logout');
     } catch (e) {
