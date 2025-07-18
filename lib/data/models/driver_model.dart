@@ -7,6 +7,7 @@ class DriverModel {
   final String? profileImageUrl;
   final DateTime dateOfBirth;
   final String licenseNumber;
+  final String licenseType; // Missing property
   final DateTime licenseExpiryDate;
   final List<Certification> certifications;
   final DriverExperience experience;
@@ -23,6 +24,8 @@ class DriverModel {
   final bool isActive;
   final String? currentBusId;
   final String? currentRoute;
+  // Missing properties
+  final double rating; // Overall driver rating
 
   DriverModel({
     required this.id,
@@ -33,6 +36,7 @@ class DriverModel {
     this.profileImageUrl,
     required this.dateOfBirth,
     required this.licenseNumber,
+    required this.licenseType,
     required this.licenseExpiryDate,
     required this.certifications,
     required this.experience,
@@ -49,9 +53,12 @@ class DriverModel {
     this.isActive = true,
     this.currentBusId,
     this.currentRoute,
+    this.rating = 0.0, // Default rating
   });
 
   String get fullName => '$firstName $lastName';
+
+  String get name => fullName; // Alias for compatibility
 
   String get displayName => firstName.isNotEmpty ? firstName : 'Driver';
 
@@ -77,6 +84,12 @@ class DriverModel {
         return 'Unavailable';
       case DriverStatus.emergency:
         return 'Emergency';
+      case DriverStatus.available:
+        return 'Available';
+      case DriverStatus.onDuty:
+        return 'On Duty';
+      case DriverStatus.onBreak:
+        return 'On Break';
     }
   }
 
@@ -100,6 +113,7 @@ class DriverModel {
       dateOfBirth: DateTime.parse(
           json['dateOfBirth'] ?? DateTime.now().toIso8601String()),
       licenseNumber: json['licenseNumber'] ?? '',
+      licenseType: json['licenseType'] ?? 'Standard',
       licenseExpiryDate: DateTime.parse(
           json['licenseExpiryDate'] ?? DateTime.now().toIso8601String()),
       certifications: (json['certifications'] as List<dynamic>?)
@@ -129,6 +143,7 @@ class DriverModel {
       isActive: json['isActive'] ?? true,
       currentBusId: json['currentBusId'],
       currentRoute: json['currentRoute'],
+      rating: json['rating']?.toDouble() ?? 0.0,
     );
   }
 
@@ -142,6 +157,7 @@ class DriverModel {
       'profileImageUrl': profileImageUrl,
       'dateOfBirth': dateOfBirth.toIso8601String(),
       'licenseNumber': licenseNumber,
+      'licenseType': licenseType,
       'licenseExpiryDate': licenseExpiryDate.toIso8601String(),
       'certifications': certifications.map((e) => e.toJson()).toList(),
       'experience': experience.toJson(),
@@ -158,6 +174,7 @@ class DriverModel {
       'isActive': isActive,
       'currentBusId': currentBusId,
       'currentRoute': currentRoute,
+      'rating': rating,
     };
   }
 
@@ -170,6 +187,7 @@ class DriverModel {
     String? profileImageUrl,
     DateTime? dateOfBirth,
     String? licenseNumber,
+    String? licenseType,
     DateTime? licenseExpiryDate,
     List<Certification>? certifications,
     DriverExperience? experience,
@@ -186,6 +204,7 @@ class DriverModel {
     bool? isActive,
     String? currentBusId,
     String? currentRoute,
+    double? rating,
   }) {
     return DriverModel(
       id: id ?? this.id,
@@ -196,6 +215,7 @@ class DriverModel {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       licenseNumber: licenseNumber ?? this.licenseNumber,
+      licenseType: licenseType ?? this.licenseType,
       licenseExpiryDate: licenseExpiryDate ?? this.licenseExpiryDate,
       certifications: certifications ?? this.certifications,
       experience: experience ?? this.experience,
@@ -212,6 +232,7 @@ class DriverModel {
       isActive: isActive ?? this.isActive,
       currentBusId: currentBusId ?? this.currentBusId,
       currentRoute: currentRoute ?? this.currentRoute,
+      rating: rating ?? this.rating,
     );
   }
 
@@ -237,6 +258,10 @@ enum DriverStatus {
   offDuty,
   unavailable,
   emergency,
+  // Missing constants used in driver_controller
+  available,
+  onDuty,
+  onBreak,
 }
 
 class Certification {
