@@ -116,14 +116,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
             prefixIcon: widget.prefixIcon != null
                 ? Icon(
                     widget.prefixIcon,
-                    color: _isFocused ? AppColors.primaryColor : Colors.grey.shade400,
+                    color: _isFocused
+                        ? AppColors.primaryColor
+                        : Colors.grey.shade400,
                   )
                 : null,
             suffixIcon: widget.suffixIcon,
             filled: true,
-            fillColor: widget.fillColor ?? 
-                (widget.enabled 
-                    ? (_isFocused ? AppColors.primaryColor.withOpacity(0.05) : Colors.grey.shade50)
+            fillColor: widget.fillColor ??
+                (widget.enabled
+                    ? (_isFocused
+                        ? AppColors.primaryColor.withOpacity(0.05)
+                        : Colors.grey.shade50)
                     : Colors.grey.shade100),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -164,7 +168,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 width: 1,
               ),
             ),
-            contentPadding: widget.contentPadding ?? 
+            contentPadding: widget.contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             counterText: '',
             errorStyle: const TextStyle(
