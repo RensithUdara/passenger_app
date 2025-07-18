@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +7,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app/routes.dart';
 import 'core/constants/string_constants.dart';
+import 'core/services/notification_service.dart';
 import 'core/themes/app_theme.dart';
+import 'firebase_options.dart';
+
+// Top-level function to handle background messages
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  debugPrint('Handling a background message: ${message.messageId}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,16 +27,20 @@ void main() async {
   ]);
 
   try {
-    // Initialize Firebase (optional for development)
-    try {
-      await Firebase.initializeApp();
-    } catch (firebaseError) {
-      debugPrint('Firebase initialization failed: $firebaseError');
-      // Continue without Firebase for development
-    }
+    // Initialize Firebase with proper configuration
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    // Initialize Firebase Messaging background handler
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // Initialize Hive for local storage
     await Hive.initFlutter();
+
+    // Initialize notification service
+    final notificationService = NotificationService.instance;
+    await notificationService.initialize();
 
     runApp(
       const ProviderScope(
