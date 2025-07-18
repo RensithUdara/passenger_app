@@ -3,7 +3,7 @@ import '../../../core/constants/color_constants.dart';
 
 class DriverPerformancePage extends StatelessWidget {
   final String? driverId;
-  
+
   const DriverPerformancePage({super.key, this.driverId});
 
   @override
