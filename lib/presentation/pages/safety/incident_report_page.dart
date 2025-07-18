@@ -5,7 +5,7 @@ class IncidentReportPage extends StatelessWidget {
   final String? busId;
   final String? driverId;
   final String? tripId;
-  
+
   const IncidentReportPage({super.key, this.busId, this.driverId, this.tripId});
 
   @override
