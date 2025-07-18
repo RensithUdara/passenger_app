@@ -31,30 +31,30 @@ class AppRoutes {
   static const String otpVerification = '/otp-verification';
   static const String dashboard = '/dashboard';
   static const String notifications = '/notifications';
-  
+
   // Bus routes
   static const String busSearch = '/bus-search';
   static const String busDetails = '/bus-details';
   static const String liveTracking = '/live-tracking';
   static const String busHistory = '/bus-history';
-  
+
   // Driver routes
   static const String driverProfile = '/driver-profile';
   static const String driverHistory = '/driver-history';
   static const String driverPerformance = '/driver-performance';
-  
+
   // Safety routes
   static const String safetyAlerts = '/safety-alerts';
   static const String hazardZones = '/hazard-zones';
   static const String emergency = '/emergency';
-  
+
   // Feedback routes
   static const String feedback = '/feedback';
   static const String feedbackHistory = '/feedback-history';
-  
+
   // QR routes
   static const String qrScanner = '/qr-scanner';
-  
+
   // Profile routes
   static const String userProfile = '/user-profile';
   static const String settings = '/settings';
@@ -67,19 +67,19 @@ class AppRoutes {
           builder: (_) => const SplashScreen(),
           settings: settings,
         );
-        
+
       case login:
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
           settings: settings,
         );
-        
+
       case register:
         return MaterialPageRoute(
           builder: (_) => const RegisterPage(),
           settings: settings,
         );
-        
+
       case otpVerification:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -89,25 +89,25 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case dashboard:
         return MaterialPageRoute(
           builder: (_) => const DashboardPage(),
           settings: settings,
         );
-        
+
       case notifications:
         return MaterialPageRoute(
           builder: (_) => const NotificationsPage(),
           settings: settings,
         );
-        
+
       case busSearch:
         return MaterialPageRoute(
           builder: (_) => const BusSearchPage(),
           settings: settings,
         );
-        
+
       case busDetails:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -116,7 +116,7 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case liveTracking:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -125,13 +125,13 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case busHistory:
         return MaterialPageRoute(
           builder: (_) => const BusHistoryPage(),
           settings: settings,
         );
-        
+
       case driverProfile:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -140,7 +140,7 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case driverHistory:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -149,7 +149,7 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case driverPerformance:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -158,25 +158,25 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case safetyAlerts:
         return MaterialPageRoute(
           builder: (_) => const SafetyAlertsPage(),
           settings: settings,
         );
-        
+
       case hazardZones:
         return MaterialPageRoute(
           builder: (_) => const HazardZonesPage(),
           settings: settings,
         );
-        
+
       case emergency:
         return MaterialPageRoute(
           builder: (_) => const EmergencyPage(),
           settings: settings,
         );
-        
+
       case feedback:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
@@ -187,31 +187,31 @@ class AppRoutes {
           ),
           settings: settings,
         );
-        
+
       case feedbackHistory:
         return MaterialPageRoute(
           builder: (_) => const FeedbackHistoryPage(),
           settings: settings,
         );
-        
+
       case qrScanner:
         return MaterialPageRoute(
           builder: (_) => const QrScannerPage(),
           settings: settings,
         );
-        
+
       case userProfile:
         return MaterialPageRoute(
           builder: (_) => const UserProfilePage(),
           settings: settings,
         );
-        
+
       case AppRoutes.settings:
         return MaterialPageRoute(
           builder: (_) => const SettingsPage(),
           settings: settings,
         );
-        
+
       default:
         return MaterialPageRoute(
           builder: (_) => const NotFoundPage(),
