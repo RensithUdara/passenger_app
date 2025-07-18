@@ -5,7 +5,7 @@ class FeedbackPage extends StatelessWidget {
   final String? busId;
   final String? driverId;
   final String? tripId;
-  
+
   const FeedbackPage({super.key, this.busId, this.driverId, this.tripId});
 
   @override
