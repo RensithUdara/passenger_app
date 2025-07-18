@@ -25,10 +25,10 @@ class AuthController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // TODO: Implement actual Firebase authentication
       print('Sign in with email: $email');
-      
+
       setData();
     } catch (e) {
       setError('Failed to sign in: ${e.toString()}');
@@ -46,10 +46,10 @@ class AuthController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // TODO: Implement actual Firebase authentication
       print('Sign up with email: $email, name: $firstName $lastName');
-      
+
       setData();
     } catch (e) {
       setError('Failed to sign up: ${e.toString()}');
@@ -61,10 +61,10 @@ class AuthController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual Firebase password reset
       print('Sending password reset email to: $email');
-      
+
       setData();
     } catch (e) {
       setError('Failed to send reset email: ${e.toString()}');
@@ -76,10 +76,10 @@ class AuthController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual OTP verification
       print('Verifying OTP: $otpCode for verification ID: $verificationId');
-      
+
       setData();
     } catch (e) {
       setError('Failed to verify OTP: ${e.toString()}');
@@ -91,10 +91,10 @@ class AuthController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual OTP resend
       print('Resending OTP to: $phoneNumber');
-      
+
       setData();
     } catch (e) {
       setError('Failed to resend OTP: ${e.toString()}');
@@ -106,10 +106,10 @@ class AuthController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual Firebase sign out
       print('Signing out user');
-      
+
       setData();
     } catch (e) {
       setError('Failed to sign out: ${e.toString()}');
@@ -124,10 +124,10 @@ class DashboardController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Load actual dashboard data
       print('Loading dashboard data');
-      
+
       setData();
     } catch (e) {
       setError('Failed to load dashboard: ${e.toString()}');
@@ -142,10 +142,10 @@ class BusController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual bus search
       print('Searching buses from $from to $to');
-      
+
       setData();
     } catch (e) {
       setError('Failed to search buses: ${e.toString()}');
@@ -157,10 +157,10 @@ class BusController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual bus details fetch
       print('Getting bus details for: $busId');
-      
+
       setData();
     } catch (e) {
       setError('Failed to get bus details: ${e.toString()}');
@@ -175,10 +175,10 @@ class ProfileController extends BaseController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
-      
+
       // TODO: Implement actual profile update
       print('Updating profile: $profileData');
-      
+
       setData();
     } catch (e) {
       setError('Failed to update profile: ${e.toString()}');
