@@ -56,6 +56,23 @@ class AuthController extends BaseController {
     }
   }
 
+  Future<bool> signInWithGoogle() async {
+    setLoading();
+    try {
+      // Simulate API call
+      await Future.delayed(const Duration(seconds: 2));
+
+      // TODO: Implement actual Google Sign-In
+      print('Sign in with Google');
+
+      setData();
+      return true;
+    } catch (e) {
+      setError('Failed to sign in with Google: ${e.toString()}');
+      return false;
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     setLoading();
     try {
