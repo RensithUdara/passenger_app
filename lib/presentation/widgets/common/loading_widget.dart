@@ -83,7 +83,7 @@ class SimpleLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!isLoading) return const SizedBox.shrink();
-    
+
     return Container(
       color: Colors.black.withOpacity(0.3),
       child: Center(
