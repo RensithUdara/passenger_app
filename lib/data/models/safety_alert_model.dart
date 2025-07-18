@@ -1,3 +1,5 @@
+import 'location_model.dart';
+
 class SafetyAlertModel {
   final String id;
   final AlertType type;
@@ -96,6 +98,21 @@ class SafetyAlertModel {
         return 'System Failure';
       case AlertType.securityBreach:
         return 'Security Breach';
+      // New cases for missing constants
+      case AlertType.emergency:
+        return 'Emergency';
+      case AlertType.accident:
+        return 'Accident';
+      case AlertType.breakdown:
+        return 'Breakdown';
+      case AlertType.hazard:
+        return 'Hazard';
+      case AlertType.weather:
+        return 'Weather';
+      case AlertType.traffic:
+        return 'Traffic';
+      case AlertType.security:
+        return 'Security';
     }
   }
 
@@ -286,6 +303,14 @@ enum AlertType {
   maintenanceRequired,
   systemFailure,
   securityBreach,
+  // Missing constants used in widgets
+  emergency,
+  accident,
+  breakdown,
+  hazard,
+  weather,
+  traffic,
+  security,
 }
 
 enum AlertPriority {
@@ -305,62 +330,29 @@ enum AlertStatus {
   escalated,
 }
 
-class LocationModel {
-  final double latitude;
-  final double longitude;
-  final double? altitude;
-  final double? accuracy;
-  final DateTime timestamp;
-  final String? address;
+// AlertSeverity class used in widgets
+class AlertSeverity {
+  static const int low = 1;
+  static const int medium = 2;
+  static const int high = 3;
+  static const int critical = 4;
+  static const int emergency = 5;
 
-  LocationModel({
-    required this.latitude,
-    required this.longitude,
-    this.altitude,
-    this.accuracy,
-    required this.timestamp,
-    this.address,
-  });
-
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-      latitude: json['latitude']?.toDouble() ?? 0.0,
-      longitude: json['longitude']?.toDouble() ?? 0.0,
-      altitude: json['altitude']?.toDouble(),
-      accuracy: json['accuracy']?.toDouble(),
-      timestamp:
-          DateTime.parse(json['timestamp'] ?? DateTime.now().toIso8601String()),
-      address: json['address'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'latitude': latitude,
-      'longitude': longitude,
-      'altitude': altitude,
-      'accuracy': accuracy,
-      'timestamp': timestamp.toIso8601String(),
-      'address': address,
-    };
-  }
-
-  LocationModel copyWith({
-    double? latitude,
-    double? longitude,
-    double? altitude,
-    double? accuracy,
-    DateTime? timestamp,
-    String? address,
-  }) {
-    return LocationModel(
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
-      altitude: altitude ?? this.altitude,
-      accuracy: accuracy ?? this.accuracy,
-      timestamp: timestamp ?? this.timestamp,
-      address: address ?? this.address,
-    );
+  static String getSeverityName(int severity) {
+    switch (severity) {
+      case low:
+        return 'Low';
+      case medium:
+        return 'Medium';
+      case high:
+        return 'High';
+      case critical:
+        return 'Critical';
+      case emergency:
+        return 'Emergency';
+      default:
+        return 'Unknown';
+    }
   }
 }
 
