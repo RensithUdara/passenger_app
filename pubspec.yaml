@@ -27,6 +27,7 @@ dependencies:
   firebase_storage: ^11.5.6
   firebase_messaging: ^14.7.10
   firebase_analytics: ^10.7.4
+  google_sign_in: ^6.2.1
 
   # Location & Maps
   geolocator: ^10.1.0
@@ -35,7 +36,7 @@ dependencies:
   location: ^5.0.3
 
   # QR Code Scanner
-  qr_code_scanner: ^1.0.1
+  mobile_scanner: ^3.5.6
   qr_flutter: ^4.1.0
 
   # Media & Camera
@@ -78,12 +79,12 @@ dependencies:
   local_auth: ^2.1.7
 
   # Push Notifications
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^17.2.2
   timezone: ^0.9.4
 
   # Forms & Validation
   flutter_form_builder: ^9.1.0
-  form_builder_validators: 11.0.0
+  form_builder_validators: ^10.0.1
 
 dev_dependencies:
   flutter_test:
@@ -99,14 +100,3 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/animations/
-  
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Poppins-Bold.ttf
-          weight: 700
