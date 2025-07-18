@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+
 import '../presentation/pages/auth/login_page.dart';
-import '../presentation/pages/auth/register_page.dart';
 import '../presentation/pages/auth/otp_verification_page.dart';
-import '../presentation/pages/dashboard/dashboard_page.dart';
-import '../presentation/pages/profile/notifications_page.dart';
-import '../presentation/pages/bus/bus_search_page.dart';
+import '../presentation/pages/auth/register_page.dart';
+import '../presentation/pages/auth/splash_page.dart';
 import '../presentation/pages/bus/bus_details_page.dart';
-import '../presentation/pages/bus/live_tracking_page.dart';
 import '../presentation/pages/bus/bus_history_page.dart';
-import '../presentation/pages/driver/driver_profile_page.dart';
+import '../presentation/pages/bus/bus_search_page.dart';
+import '../presentation/pages/bus/live_tracking_page.dart';
+import '../presentation/pages/dashboard/dashboard_page.dart';
 import '../presentation/pages/driver/driver_history_page.dart';
 import '../presentation/pages/driver/driver_performance_page.dart';
-import '../presentation/pages/safety/safety_alerts_page.dart';
-import '../presentation/pages/safety/hazard_zones_page.dart';
-import '../presentation/pages/safety/emergency_page.dart';
-import '../presentation/pages/feedback/feedback_page.dart';
+import '../presentation/pages/driver/driver_profile_page.dart';
 import '../presentation/pages/feedback/feedback_history_page.dart';
-import '../presentation/pages/qr/qr_scanner_page.dart';
-import '../presentation/pages/profile/user_profile_page.dart';
+import '../presentation/pages/feedback/feedback_page.dart';
 import '../presentation/pages/not_found_page.dart';
+import '../presentation/pages/profile/notifications_page.dart';
 import '../presentation/pages/profile/settings_page.dart';
-import '../ui/screens/splash_screen.dart';
+import '../presentation/pages/profile/user_profile_page.dart';
+import '../presentation/pages/qr/qr_scanner_page.dart';
+import '../presentation/pages/safety/emergency_page.dart';
+import '../presentation/pages/safety/hazard_zones_page.dart';
+import '../presentation/pages/safety/safety_alerts_page.dart';
 
 /// Application route configuration and navigation management
 class AppRoutes {
@@ -64,7 +65,7 @@ class AppRoutes {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
-          builder: (_) => const SplashScreen(),
+          builder: (_) => const SplashPage(),
           settings: settings,
         );
 
