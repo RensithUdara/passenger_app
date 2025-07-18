@@ -76,7 +76,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
 
   void _startAnimations() {
     _logoController.forward();
-    
+
     // Start text animation after logo animation begins
     Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
@@ -95,7 +95,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
 
   void _checkAuthenticationState() {
     final authState = ref.read(authControllerProvider);
-    
+
     if (authState.user != null) {
       // User is authenticated, go to dashboard
       Navigator.pushReplacementNamed(context, '/dashboard');
@@ -166,9 +166,9 @@ class _SplashPageState extends ConsumerState<SplashPage>
                         );
                       },
                     ),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Animated Text
                     AnimatedBuilder(
                       animation: _textController,
@@ -216,7 +216,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
                   ],
                 ),
               ),
-              
+
               // Loading indicator and version
               Expanded(
                 flex: 1,
@@ -232,9 +232,9 @@ class _SplashPageState extends ConsumerState<SplashPage>
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Loading text
                     const Text(
                       'Loading...',
@@ -244,9 +244,9 @@ class _SplashPageState extends ConsumerState<SplashPage>
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Version and powered by
                     Column(
                       children: [
@@ -267,7 +267,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 30),
                   ],
                 ),
