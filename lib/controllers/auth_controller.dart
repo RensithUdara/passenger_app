@@ -251,6 +251,117 @@ class AuthController extends StateNotifier<AuthControllerState> {
     }
   }
 
+  /// Register user with complete details
+  Future<bool> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+
+      final userCredential =
+          await _firebaseService.createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      if (userCredential?.user != null) {
+        // Save user token
+        final token = await userCredential!.user!.getIdToken();
+        if (token != null) {
+          await _storageService.saveUserToken(token);
+        }
+
+        // Update display name
+        final fullName = '$firstName $lastName';
+        await userCredential.user!.updateDisplayName(fullName);
+
+        // Create complete user profile
+        final userModel = UserModel(
+          id: userCredential.user!.uid,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          dateOfBirth: DateTime.now()
+              .subtract(const Duration(days: 365 * 18)), // Default 18 years ago
+          gender: '',
+          address: Address(
+            street: '',
+            city: '',
+            state: '',
+            zipCode: '',
+            country: '',
+          ),
+          emergencyContact: EmergencyContact(
+            name: '',
+            phoneNumber: '',
+            relationship: '',
+          ),
+          preferences: UserPreferences(),
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+
+        await _userRepository.createUser(userModel);
+
+        // Auth state listener will handle the rest
+        return true;
+      } else {
+        state = state.copyWith(
+          state: AuthState.error,
+          error: 'Registration failed',
+          isLoading: false,
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        state: AuthState.error,
+        error: e.toString(),
+        isLoading: false,
+      );
+      return false;
+    }
+  }
+
+  /// Sign in with Google
+  Future<bool> signInWithGoogle() async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+
+      final userCredential = await _firebaseService.signInWithGoogle();
+
+      if (userCredential?.user != null) {
+        // Save user token
+        final token = await userCredential!.user!.getIdToken();
+        if (token != null) {
+          await _storageService.saveUserToken(token);
+        }
+
+        // Auth state listener will handle the rest
+        return true;
+      } else {
+        state = state.copyWith(
+          state: AuthState.error,
+          error: 'Google sign-in was cancelled',
+          isLoading: false,
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        state: AuthState.error,
+        error: e.toString(),
+        isLoading: false,
+      );
+      return false;
+    }
+  }
+
   /// Send password reset email
   Future<void> sendPasswordResetEmail(String email) async {
     try {
