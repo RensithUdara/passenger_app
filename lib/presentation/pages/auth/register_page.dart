@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/constants/color_constants.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../providers/simple_providers.dart';
@@ -193,9 +194,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Registration Form
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -239,9 +240,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Email Field
                         CustomTextField(
                           controller: _emailController,
@@ -251,9 +252,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Phone Field
                         CustomTextField(
                           controller: _phoneController,
@@ -263,9 +264,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           keyboardType: TextInputType.phone,
                           validator: _validatePhoneNumber,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Password Field
                         CustomTextField(
                           controller: _passwordController,
@@ -287,9 +288,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           ),
                           validator: _validatePassword,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Confirm Password Field
                         CustomTextField(
                           controller: _confirmPasswordController,
@@ -305,15 +306,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
                               });
                             },
                           ),
                           validator: _validateConfirmPassword,
                         ),
-                        
+
                         const SizedBox(height: 20),
-                        
+
                         // Terms and Conditions
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,24 +335,24 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 children: [
                                   const SizedBox(height: 12),
                                   RichText(
-                                    text: TextSpan(
-                                      style: const TextStyle(
+                                    text: const TextSpan(
+                                      style: TextStyle(
                                         color: AppColors.textSecondary,
                                         fontSize: 14,
                                       ),
                                       children: [
-                                        const TextSpan(text: 'I agree to the '),
+                                        TextSpan(text: 'I agree to the '),
                                         TextSpan(
                                           text: 'Terms of Service',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.primaryColor,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        const TextSpan(text: ' and '),
+                                        TextSpan(text: ' and '),
                                         TextSpan(
                                           text: 'Privacy Policy',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.primaryColor,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -363,9 +365,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 20),
-                        
+
                         // Error Display
                         if (error != null)
                           Container(
@@ -380,7 +382,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.error_outline,
                                   color: AppColors.errorColor,
                                   size: 20,
@@ -389,7 +391,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 Expanded(
                                   child: Text(
                                     error.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.errorColor,
                                       fontSize: 14,
                                     ),
@@ -398,16 +400,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                               ],
                             ),
                           ),
-                        
+
                         // Sign Up Button
                         CustomButton(
                           text: AppStrings.register,
                           onPressed: _signUp,
                           isLoading: isLoading,
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Sign In Link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -436,7 +438,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
