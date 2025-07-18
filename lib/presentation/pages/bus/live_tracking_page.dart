@@ -3,7 +3,7 @@ import '../../../core/constants/color_constants.dart';
 
 class LiveTrackingPage extends StatelessWidget {
   final String? busId;
-  
+
   const LiveTrackingPage({super.key, this.busId});
 
   @override
