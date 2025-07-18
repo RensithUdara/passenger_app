@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "719842751658",
+    "project_id": "safe-driver-system",
+    "storage_bucket": "safe-driver-system.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719842751658:android:c1b794fb9edad4d2514cd3",
+        "android_client_info": {
+          "package_name": "com.example.passenger_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcibaYhXUItkAhrUQuugWyDirmQ3-0VfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
