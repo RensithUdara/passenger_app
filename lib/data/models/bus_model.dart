@@ -1,3 +1,5 @@
+import 'location_model.dart';
+
 class BusModel {
   final String id;
   final String busNumber;
@@ -66,6 +68,10 @@ class BusModel {
         return 'Maintenance';
       case BusStatus.emergency:
         return 'Emergency';
+      case BusStatus.active:
+        return 'Active';
+      case BusStatus.enRoute:
+        return 'En Route';
     }
   }
 
@@ -199,6 +205,8 @@ enum BusStatus {
   atStop,
   maintenance,
   emergency,
+  active, // Missing constant used in widgets
+  enRoute, // Missing constant used in dashboard_controller
 }
 
 enum BusType {
@@ -208,65 +216,6 @@ enum BusType {
   articulated,
   miniVan,
   coach,
-}
-
-class LocationModel {
-  final double latitude;
-  final double longitude;
-  final double? altitude;
-  final double? accuracy;
-  final DateTime timestamp;
-  final String? address;
-
-  LocationModel({
-    required this.latitude,
-    required this.longitude,
-    this.altitude,
-    this.accuracy,
-    required this.timestamp,
-    this.address,
-  });
-
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-      latitude: json['latitude']?.toDouble() ?? 0.0,
-      longitude: json['longitude']?.toDouble() ?? 0.0,
-      altitude: json['altitude']?.toDouble(),
-      accuracy: json['accuracy']?.toDouble(),
-      timestamp:
-          DateTime.parse(json['timestamp'] ?? DateTime.now().toIso8601String()),
-      address: json['address'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'latitude': latitude,
-      'longitude': longitude,
-      'altitude': altitude,
-      'accuracy': accuracy,
-      'timestamp': timestamp.toIso8601String(),
-      'address': address,
-    };
-  }
-
-  LocationModel copyWith({
-    double? latitude,
-    double? longitude,
-    double? altitude,
-    double? accuracy,
-    DateTime? timestamp,
-    String? address,
-  }) {
-    return LocationModel(
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
-      altitude: altitude ?? this.altitude,
-      accuracy: accuracy ?? this.accuracy,
-      timestamp: timestamp ?? this.timestamp,
-      address: address ?? this.address,
-    );
-  }
 }
 
 class BusSpecifications {
