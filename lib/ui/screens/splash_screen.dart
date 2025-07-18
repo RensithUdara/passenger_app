@@ -21,7 +21,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   @override
   void initState() {
     super.initState();
-    
+
     _animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -56,11 +56,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _initializeApp() async {
     try {
       // Initialize authentication status
-      await ref.read(authControllerProvider.notifier).checkAuthenticationStatus();
-      
+      await ref
+          .read(authControllerProvider.notifier)
+          .checkAuthenticationStatus();
+
       // Wait for animation to complete
       await Future.delayed(const Duration(seconds: 3));
-      
+
       // Navigate based on authentication status
       if (mounted) {
         final authState = ref.read(authControllerProvider);
@@ -122,9 +124,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       color: AppColors.primaryColor,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // App Name
                   const Text(
                     AppConstants.appName,
@@ -135,9 +137,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       letterSpacing: 2,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // App Tagline
                   const Text(
                     'Safe Journeys, Smart Travel',
@@ -147,9 +149,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       letterSpacing: 1,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 60),
-                  
+
                   // Loading Indicator
                   const SizedBox(
                     width: 32,
@@ -159,9 +161,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       strokeWidth: 2,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   const Text(
                     'Initializing...',
                     style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/color_constants.dart';
 import '../../../providers/app_providers.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           _emailController.text.trim(),
           _passwordController.text.trim(),
         );
-        
+
         if (_rememberMe) {
           // Save credentials for auto-login
           // Implementation depends on your storage service
@@ -96,7 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 60),
-                
+
                 // Logo and Title
                 Column(
                   children: [
@@ -139,9 +140,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Login Form
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -179,9 +180,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        
+
                         const SizedBox(height: 32),
-                        
+
                         // Email Field
                         CustomTextField(
                           controller: _emailController,
@@ -191,9 +192,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Password Field
                         CustomTextField(
                           controller: _passwordController,
@@ -215,9 +216,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           validator: _validatePassword,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Remember Me & Forgot Password
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,7 +244,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/forgot-password');
+                                Navigator.pushNamed(
+                                    context, '/forgot-password');
                               },
                               child: const Text(
                                 'Forgot Password?',
@@ -255,9 +257,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Error Display
                         if (error != null)
                           Container(
@@ -272,7 +274,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.error_outline,
                                   color: AppColors.errorColor,
                                   size: 20,
@@ -281,7 +283,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 Expanded(
                                   child: Text(
                                     error,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.errorColor,
                                       fontSize: 14,
                                     ),
@@ -290,16 +292,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ],
                             ),
                           ),
-                        
+
                         // Sign In Button
                         CustomButton(
                           text: 'Sign In',
                           onPressed: _signIn,
                           isLoading: isLoading,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Divider
                         Row(
                           children: [
@@ -309,7 +311,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
                                 'OR',
                                 style: TextStyle(
@@ -325,9 +328,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Google Sign In Button
                         CustomButton(
                           text: 'Continue with Google',
@@ -335,9 +338,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           isOutlined: true,
                           icon: Icons.g_mobiledata,
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Sign Up Link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -366,7 +369,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
