@@ -255,6 +255,65 @@ class BusRepository {
   double _degreesToRadians(double degrees) {
     return degrees * (pi / 180);
   }
+
+  /// Get all buses
+  Future<List<BusModel>> getAllBuses() async {
+    try {
+      final query = await _firebaseService.firestore
+          .collection(_collection)
+          .orderBy('busNumber')
+          .get();
+
+      return query.docs
+          .map((doc) => BusModel.fromJson({...doc.data(), 'id': doc.id}))
+          .toList();
+    } catch (e) {
+      throw BusRepositoryException('Failed to get all buses: $e');
+    }
+  }
+
+  /// Get active journey for a user
+  Future<BusModel?> getActiveJourney(String userId) async {
+    try {
+      final query = await _firebaseService.firestore
+          .collection('journeys')
+          .where('userId', isEqualTo: userId)
+          .where('status', isEqualTo: 'active')
+          .limit(1)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        final journeyData = query.docs.first.data();
+        final busId = journeyData['busId'] as String?;
+
+        if (busId != null) {
+          return await getBusById(busId);
+        }
+      }
+      return null;
+    } catch (e) {
+      throw BusRepositoryException('Failed to get active journey: $e');
+    }
+  }
+
+  /// Get bus by QR code
+  Future<BusModel?> getBusByQrCode(String qrCode) async {
+    try {
+      final query = await _firebaseService.firestore
+          .collection(_collection)
+          .where('qrCode', isEqualTo: qrCode)
+          .limit(1)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        final doc = query.docs.first;
+        return BusModel.fromJson({...doc.data(), 'id': doc.id});
+      }
+      return null;
+    } catch (e) {
+      throw BusRepositoryException('Failed to get bus by QR code: $e');
+    }
+  }
 }
 
 // Custom exception class
