@@ -87,7 +87,8 @@ class PermissionUtils {
   }
 
   /// Request all necessary permissions for the app
-  static Future<Map<Permission, PermissionStatus>> requestAllPermissions() async {
+  static Future<Map<Permission, PermissionStatus>>
+      requestAllPermissions() async {
     final permissions = [
       Permission.location,
       Permission.camera,
@@ -121,7 +122,8 @@ class PermissionUtils {
   }
 
   /// Check if permission is permanently denied
-  static Future<bool> isPermissionPermanentlyDenied(Permission permission) async {
+  static Future<bool> isPermissionPermanentlyDenied(
+      Permission permission) async {
     final status = await permission.status;
     return status == PermissionStatus.permanentlyDenied;
   }
@@ -181,26 +183,26 @@ class PermissionUtils {
     int maxRetries = 3,
   }) async {
     int attempts = 0;
-    
+
     while (attempts < maxRetries) {
       final status = await permission.request();
-      
+
       if (status == PermissionStatus.granted) {
         return true;
       }
-      
+
       if (status == PermissionStatus.permanentlyDenied) {
         return false;
       }
-      
+
       attempts++;
-      
+
       // Wait before retry
       if (attempts < maxRetries) {
         await Future.delayed(const Duration(seconds: 1));
       }
     }
-    
+
     return false;
   }
 }
