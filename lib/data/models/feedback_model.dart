@@ -1,3 +1,5 @@
+import 'location_model.dart';
+
 class FeedbackModel {
   final String id;
   final String userId;
@@ -27,6 +29,10 @@ class FeedbackModel {
   final bool isPublic;
   final int helpfulCount;
   final List<String> relatedFeedbackIds;
+  // Missing properties used in controller
+  final String comment;
+  final List<String> images;
+  final DateTime submittedAt;
 
   FeedbackModel({
     required this.id,
@@ -57,6 +63,10 @@ class FeedbackModel {
     this.isPublic = false,
     this.helpfulCount = 0,
     required this.relatedFeedbackIds,
+    // New required properties
+    required this.comment,
+    required this.images,
+    required this.submittedAt,
   });
 
   String get categoryDisplay {
@@ -98,6 +108,8 @@ class FeedbackModel {
         return 'Inquiry';
       case FeedbackType.urgent:
         return 'Urgent';
+      case FeedbackType.general:
+        return 'General';
     }
   }
 
@@ -219,6 +231,11 @@ class FeedbackModel {
       isPublic: json['isPublic'] ?? false,
       helpfulCount: json['helpfulCount'] ?? 0,
       relatedFeedbackIds: List<String>.from(json['relatedFeedbackIds'] ?? []),
+      // New required properties
+      comment: json['comment'] ?? '',
+      images: List<String>.from(json['images'] ?? []),
+      submittedAt: DateTime.parse(
+          json['submittedAt'] ?? DateTime.now().toIso8601String()),
     );
   }
 
@@ -252,6 +269,10 @@ class FeedbackModel {
       'isPublic': isPublic,
       'helpfulCount': helpfulCount,
       'relatedFeedbackIds': relatedFeedbackIds,
+      // New properties
+      'comment': comment,
+      'images': images,
+      'submittedAt': submittedAt.toIso8601String(),
     };
   }
 
@@ -284,6 +305,10 @@ class FeedbackModel {
     bool? isPublic,
     int? helpfulCount,
     List<String>? relatedFeedbackIds,
+    // New parameters
+    String? comment,
+    List<String>? images,
+    DateTime? submittedAt,
   }) {
     return FeedbackModel(
       id: id ?? this.id,
@@ -314,6 +339,10 @@ class FeedbackModel {
       isPublic: isPublic ?? this.isPublic,
       helpfulCount: helpfulCount ?? this.helpfulCount,
       relatedFeedbackIds: relatedFeedbackIds ?? this.relatedFeedbackIds,
+      // New required properties
+      comment: comment ?? this.comment,
+      images: images ?? this.images,
+      submittedAt: submittedAt ?? this.submittedAt,
     );
   }
 
@@ -352,6 +381,7 @@ enum FeedbackType {
   suggestion,
   inquiry,
   urgent,
+  general, // Missing constant used in feedback_controller
 }
 
 enum FeedbackStatus {
@@ -389,6 +419,21 @@ class FeedbackRating {
     this.driverBehavior,
     this.vehicleCondition,
   });
+
+  // Static enum-like values for compatibility
+  static final List<FeedbackRating> values = [
+    FeedbackRating(overall: 1), // terrible
+    FeedbackRating(overall: 2), // poor
+    FeedbackRating(overall: 3), // average
+    FeedbackRating(overall: 4), // good
+    FeedbackRating(overall: 5), // excellent
+  ];
+
+  static FeedbackRating get terrible => values[0];
+  static FeedbackRating get poor => values[1];
+  static FeedbackRating get average => values[2];
+  static FeedbackRating get good => values[3];
+  static FeedbackRating get excellent => values[4];
 
   double get averageRating {
     final ratings = [
@@ -515,47 +560,6 @@ class FeedbackAttachment {
       'uploadedAt': uploadedAt.toIso8601String(),
       'thumbnail': thumbnail,
       'metadata': metadata,
-    };
-  }
-}
-
-class LocationModel {
-  final double latitude;
-  final double longitude;
-  final double? altitude;
-  final double? accuracy;
-  final DateTime timestamp;
-  final String? address;
-
-  LocationModel({
-    required this.latitude,
-    required this.longitude,
-    this.altitude,
-    this.accuracy,
-    required this.timestamp,
-    this.address,
-  });
-
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-      latitude: json['latitude']?.toDouble() ?? 0.0,
-      longitude: json['longitude']?.toDouble() ?? 0.0,
-      altitude: json['altitude']?.toDouble(),
-      accuracy: json['accuracy']?.toDouble(),
-      timestamp:
-          DateTime.parse(json['timestamp'] ?? DateTime.now().toIso8601String()),
-      address: json['address'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'latitude': latitude,
-      'longitude': longitude,
-      'altitude': altitude,
-      'accuracy': accuracy,
-      'timestamp': timestamp.toIso8601String(),
-      'address': address,
     };
   }
 }
