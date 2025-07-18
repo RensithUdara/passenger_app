@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/constants/color_constants.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../providers/simple_providers.dart';
@@ -29,12 +30,13 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
     if (_formKey.currentState!.validate()) {
       try {
         final authController = ref.read(authControllerProvider.notifier);
-        await authController.sendPasswordResetEmail(_emailController.text.trim());
-        
+        await authController
+            .sendPasswordResetEmail(_emailController.text.trim());
+
         setState(() {
           _isEmailSent = true;
         });
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Password reset email sent successfully'),
@@ -87,7 +89,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Header
                 Column(
                   children: [
@@ -122,7 +124,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _isEmailSent 
+                      _isEmailSent
                           ? 'We sent a password reset link to ${_emailController.text}'
                           : 'Don\'t worry, we\'ll send you reset instructions',
                       style: const TextStyle(
@@ -133,9 +135,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Form or Success Message
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -150,9 +152,11 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                       ),
                     ],
                   ),
-                  child: _isEmailSent ? _buildSuccessContent() : _buildFormContent(),
+                  child: _isEmailSent
+                      ? _buildSuccessContent()
+                      : _buildFormContent(),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
@@ -177,9 +181,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           const Text(
             'Enter your email address and we\'ll send you a link to reset your password',
             style: TextStyle(
@@ -188,9 +192,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          
+
           const SizedBox(height: 32),
-          
+
           // Email Field
           CustomTextField(
             controller: _emailController,
@@ -200,17 +204,17 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
             keyboardType: TextInputType.emailAddress,
             validator: _validateEmail,
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // Send Email Button
           CustomButton(
             text: 'Send Reset Email',
             onPressed: _sendResetEmail,
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Back to Login
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -249,9 +253,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           size: 60,
           color: AppColors.successColor,
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         const Text(
           'Email Sent Successfully!',
           style: TextStyle(
@@ -261,9 +265,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           ),
           textAlign: TextAlign.center,
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         const Text(
           'Please check your email and follow the instructions to reset your password.',
           style: TextStyle(
@@ -272,9 +276,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           ),
           textAlign: TextAlign.center,
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         // Resend Email Button
         CustomButton(
           text: 'Resend Email',
@@ -285,9 +289,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           },
           isOutlined: true,
         ),
-        
+
         const SizedBox(height: 16),
-        
+
         // Back to Login
         CustomButton(
           text: 'Back to Sign In',
@@ -295,9 +299,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
             Navigator.pop(context);
           },
         ),
-        
+
         const SizedBox(height: 16),
-        
+
         // Email App Instructions
         Container(
           padding: const EdgeInsets.all(16),
@@ -308,15 +312,15 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               color: AppColors.primaryColor.withOpacity(0.2),
             ),
           ),
-          child: Column(
+          child: const Column(
             children: [
-              const Icon(
+              Icon(
                 Icons.info_outline,
                 color: AppColors.primaryColor,
                 size: 20,
               ),
-              const SizedBox(height: 8),
-              const Text(
+              SizedBox(height: 8),
+              Text(
                 'Didn\'t receive the email?',
                 style: TextStyle(
                   fontSize: 14,
@@ -324,8 +328,8 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 4),
-              const Text(
+              SizedBox(height: 4),
+              Text(
                 'Check your spam folder or try resending the email',
                 style: TextStyle(
                   fontSize: 12,
