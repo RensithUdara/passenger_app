@@ -3,7 +3,7 @@ import '../../../core/constants/color_constants.dart';
 
 class BusDetailsPage extends StatelessWidget {
   final String? busId;
-  
+
   const BusDetailsPage({super.key, this.busId});
 
   @override
