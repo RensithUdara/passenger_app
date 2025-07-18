@@ -3,7 +3,7 @@ import '../../core/constants/color_constants.dart';
 
 class ErrorPage extends StatelessWidget {
   final String? message;
-  
+
   const ErrorPage({super.key, this.message});
 
   @override
@@ -55,7 +55,8 @@ class ErrorPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 ),
                 child: const Text(
                   'Go Home',
