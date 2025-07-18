@@ -18,11 +18,13 @@ class OtpVerificationPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<OtpVerificationPage> createState() => _OtpVerificationPageState();
+  ConsumerState<OtpVerificationPage> createState() =>
+      _OtpVerificationPageState();
 }
 
 class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
-  final List<TextEditingController> _otpControllers = List.generate(6, (index) => TextEditingController());
+  final List<TextEditingController> _otpControllers =
+      List.generate(6, (index) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
   Timer? _timer;
   int _seconds = 60;
@@ -116,15 +118,15 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
     try {
       final authController = ref.read(authControllerProvider.notifier);
       await authController.resendOtp(widget.phoneNumber);
-      
+
       // Clear current OTP
       for (var controller in _otpControllers) {
         controller.clear();
       }
       _focusNodes[0].requestFocus();
-      
+
       _startTimer();
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('OTP sent successfully'),
@@ -166,7 +168,7 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Header
                 Column(
                   children: [
@@ -210,9 +212,9 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // OTP Form
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -239,9 +241,9 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      
+
                       const SizedBox(height: 8),
-                      
+
                       const Text(
                         'Type the 6-digit code we sent you',
                         style: TextStyle(
@@ -250,9 +252,9 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      
+
                       const SizedBox(height: 40),
-                      
+
                       // OTP Input Fields
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -290,13 +292,17 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                               onChanged: (value) => _onOtpChanged(value, index),
                               onTap: () {
                                 if (_otpControllers[index].text.isNotEmpty) {
-                                  _otpControllers[index].selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _otpControllers[index].text.length),
+                                  _otpControllers[index].selection =
+                                      TextSelection.fromPosition(
+                                    TextPosition(
+                                        offset:
+                                            _otpControllers[index].text.length),
                                   );
                                 }
                               },
                               onEditingComplete: () {
-                                if (_otpControllers[index].text.isEmpty && index > 0) {
+                                if (_otpControllers[index].text.isEmpty &&
+                                    index > 0) {
                                   _onOtpBackspace(index);
                                 }
                               },
@@ -304,18 +310,18 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                           );
                         }),
                       ),
-                      
+
                       const SizedBox(height: 40),
-                      
+
                       // Verify Button
                       CustomButton(
                         text: 'Verify Code',
                         onPressed: _verifyOtp,
                         isLoading: isLoading,
                       ),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Resend Code
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -347,9 +353,9 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                             ),
                         ],
                       ),
-                      
+
                       const SizedBox(height: 16),
-                      
+
                       // Change Phone Number
                       TextButton(
                         onPressed: () {
@@ -366,7 +372,7 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
