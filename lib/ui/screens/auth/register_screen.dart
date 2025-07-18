@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/constants/color_constants.dart';
 import '../../../providers/app_providers.dart';
 import '../../widgets/custom_button.dart';
@@ -114,7 +115,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Header
                 Row(
                   children: [
@@ -139,9 +140,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const SizedBox(width: 48),
                   ],
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Registration Form
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -179,9 +180,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        
+
                         const SizedBox(height: 32),
-                        
+
                         // Name Fields Row
                         Row(
                           children: [
@@ -206,9 +207,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Email Field
                         CustomTextField(
                           controller: _emailController,
@@ -218,9 +219,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Password Field
                         CustomTextField(
                           controller: _passwordController,
@@ -242,9 +243,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                           validator: _validatePassword,
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // Confirm Password Field
                         CustomTextField(
                           controller: _confirmPasswordController,
@@ -260,15 +261,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
                               });
                             },
                           ),
                           validator: _validateConfirmPassword,
                         ),
-                        
+
                         const SizedBox(height: 20),
-                        
+
                         // Terms and Conditions
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,13 +287,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: RichText(
-                                text: TextSpan(
-                                  style: const TextStyle(
+                                text: const TextSpan(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     color: AppColors.textSecondary,
                                   ),
                                   children: [
-                                    const TextSpan(text: 'I agree to the '),
+                                    TextSpan(text: 'I agree to the '),
                                     TextSpan(
                                       text: 'Terms of Service',
                                       style: TextStyle(
@@ -300,7 +302,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                         decoration: TextDecoration.underline,
                                       ),
                                     ),
-                                    const TextSpan(text: ' and '),
+                                    TextSpan(text: ' and '),
                                     TextSpan(
                                       text: 'Privacy Policy',
                                       style: TextStyle(
@@ -315,9 +317,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                           ],
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Error Display
                         if (error != null)
                           Container(
@@ -332,7 +334,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.error_outline,
                                   color: AppColors.errorColor,
                                   size: 20,
@@ -341,7 +343,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                 Expanded(
                                   child: Text(
                                     error,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.errorColor,
                                       fontSize: 14,
                                     ),
@@ -350,16 +352,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               ],
                             ),
                           ),
-                        
+
                         // Create Account Button
                         CustomButton(
                           text: 'Create Account',
                           onPressed: _register,
                           isLoading: isLoading,
                         ),
-                        
+
                         const SizedBox(height: 24),
-                        
+
                         // Sign In Link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -388,7 +390,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
