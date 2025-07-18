@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/color_constants.dart';
 
 class HomePage extends StatelessWidget {
@@ -67,7 +68,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Quick Actions
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -101,7 +102,8 @@ class HomePage extends StatelessWidget {
                                 icon: Icons.search,
                                 title: 'Find Bus',
                                 subtitle: 'Search routes',
-                                onTap: () => Navigator.pushNamed(context, '/bus-search'),
+                                onTap: () =>
+                                    Navigator.pushNamed(context, '/bus-search'),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -110,7 +112,8 @@ class HomePage extends StatelessWidget {
                                 icon: Icons.qr_code_scanner,
                                 title: 'Scan QR',
                                 subtitle: 'Quick boarding',
-                                onTap: () => Navigator.pushNamed(context, '/qr-scanner'),
+                                onTap: () =>
+                                    Navigator.pushNamed(context, '/qr-scanner'),
                               ),
                             ),
                           ],
@@ -123,7 +126,8 @@ class HomePage extends StatelessWidget {
                                 icon: Icons.history,
                                 title: 'My Trips',
                                 subtitle: 'View history',
-                                onTap: () => Navigator.pushNamed(context, '/trip-history'),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/trip-history'),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -132,7 +136,8 @@ class HomePage extends StatelessWidget {
                                 icon: Icons.security,
                                 title: 'Safety',
                                 subtitle: 'Emergency help',
-                                onTap: () => Navigator.pushNamed(context, '/safety-hub'),
+                                onTap: () =>
+                                    Navigator.pushNamed(context, '/safety-hub'),
                               ),
                             ),
                           ],
@@ -140,9 +145,9 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Recent Activity
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -157,10 +162,10 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Column(
+                    child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Recent Activity',
                           style: TextStyle(
                             fontSize: 18,
@@ -168,8 +173,8 @@ class HomePage extends StatelessWidget {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        const Center(
+                        SizedBox(height: 16),
+                        Center(
                           child: Column(
                             children: [
                               Icon(
