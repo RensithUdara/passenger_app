@@ -1,21 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../core/services/firebase_service.dart';
 import '../models/user_model.dart';
 
 class AuthRepository {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseService _firebaseService = FirebaseService.instance;
 
   // Get current user
   Future<UserModel?> getCurrentUser() async {
     try {
-      final user = _firebaseAuth.currentUser;
+      final user = _firebaseService.currentUser;
       if (user != null) {
-        final userDoc =
-            await _firestore.collection('users').doc(user.uid).get();
+        final userDoc = await _firebaseService.firestore
+            .collection('users')
+            .doc(user.uid)
+            .get();
         if (userDoc.exists) {
           return UserModel.fromJson({
             'id': user.uid,
@@ -33,14 +32,14 @@ class AuthRepository {
   Future<UserModel?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
-      final credential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+      final credential = await _firebaseService.signInWithEmailAndPassword(
+        email,
+        password,
       );
 
-      if (credential.user != null) {
+      if (credential?.user != null) {
         // Update last login time
-        await _updateLastLoginTime(credential.user!.uid);
+        await _updateLastLoginTime(credential!.user!.uid);
         return await getCurrentUser();
       }
       return null;
@@ -59,14 +58,14 @@ class AuthRepository {
     String phone,
   ) async {
     try {
-      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+      final credential = await _firebaseService.createUserWithEmailAndPassword(
+        email,
+        password,
       );
 
-      if (credential.user != null) {
+      if (credential?.user != null) {
         // Update display name
-        await credential.user!.updateDisplayName(name);
+        await credential!.user!.updateDisplayName(name);
 
         // Create user document in Firestore
         final userModel = UserModel(
@@ -95,16 +94,25 @@ class AuthRepository {
           preferences: UserPreferences(),
         );
 
-        await _firestore.collection('users').doc(credential.user!.uid).set({
-          'name': name,
+        await _firebaseService.firestore
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set({
+          'firstName': userModel.firstName,
+          'lastName': userModel.lastName,
           'email': email,
-          'phone': phone,
+          'phoneNumber': phone,
           'createdAt': DateTime.now().toIso8601String(),
           'lastLoginAt': DateTime.now().toIso8601String(),
           'isEmailVerified': false,
           'isPhoneVerified': false,
           'preferences': UserPreferences().toJson(),
           'emergencyContacts': [],
+          'dateOfBirth': userModel.dateOfBirth.toIso8601String(),
+          'gender': userModel.gender,
+          'address': userModel.address.toJson(),
+          'emergencyContact': userModel.emergencyContact.toJson(),
+          'updatedAt': DateTime.now().toIso8601String(),
         });
 
         return userModel;
@@ -120,34 +128,28 @@ class AuthRepository {
   // Sign in with Google
   Future<UserModel?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
+      final userCredential = await _firebaseService.signInWithGoogle();
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-
-      if (userCredential.user != null) {
+      if (userCredential?.user != null) {
         // Check if user document exists, if not create it
-        final userDoc = await _firestore
+        final userDoc = await _firebaseService.firestore
             .collection('users')
-            .doc(userCredential.user!.uid)
+            .doc(userCredential!.user!.uid)
             .get();
 
         if (!userDoc.exists) {
-          await _firestore
+          await _firebaseService.firestore
               .collection('users')
               .doc(userCredential.user!.uid)
               .set({
-            'name': userCredential.user!.displayName ?? '',
+            'firstName':
+                userCredential.user!.displayName?.split(' ').first ?? '',
+            'lastName':
+                (userCredential.user!.displayName?.split(' ').length ?? 0) > 1
+                    ? userCredential.user!.displayName?.split(' ').last ?? ''
+                    : '',
             'email': userCredential.user!.email ?? '',
-            'phone': userCredential.user!.phoneNumber,
+            'phoneNumber': userCredential.user!.phoneNumber ?? '',
             'profileImage': userCredential.user!.photoURL,
             'createdAt': DateTime.now().toIso8601String(),
             'lastLoginAt': DateTime.now().toIso8601String(),
@@ -155,6 +157,17 @@ class AuthRepository {
             'isPhoneVerified': false,
             'preferences': UserPreferences().toJson(),
             'emergencyContacts': [],
+            'dateOfBirth': DateTime.now()
+                .subtract(const Duration(days: 365 * 18))
+                .toIso8601String(),
+            'gender': '',
+            'address': Address(
+                    street: '', city: '', state: '', zipCode: '', country: '')
+                .toJson(),
+            'emergencyContact':
+                EmergencyContact(name: '', phoneNumber: '', relationship: '')
+                    .toJson(),
+            'updatedAt': DateTime.now().toIso8601String(),
           });
         } else {
           await _updateLastLoginTime(userCredential.user!.uid);
@@ -177,7 +190,7 @@ class AuthRepository {
       );
 
       final userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+          await _firebaseService.auth.signInWithCredential(credential);
 
       if (userCredential.user != null) {
         await _updateLastLoginTime(userCredential.user!.uid);
@@ -198,10 +211,10 @@ class AuthRepository {
     Function(String) onVerificationFailed,
   ) async {
     try {
-      await _firebaseAuth.verifyPhoneNumber(
+      await _firebaseService.auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _firebaseAuth.signInWithCredential(credential);
+          await _firebaseService.auth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
           onVerificationFailed(_handleAuthException(e));
@@ -219,7 +232,7 @@ class AuthRepository {
   // Reset password
   Future<void> resetPassword(String email) async {
     try {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      await _firebaseService.sendPasswordResetEmail(email);
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } catch (e) {
@@ -230,10 +243,7 @@ class AuthRepository {
   // Sign out
   Future<void> signOut() async {
     try {
-      await Future.wait([
-        _firebaseAuth.signOut(),
-        _googleSignIn.signOut(),
-      ]);
+      await _firebaseService.signOut();
     } catch (e) {
       throw Exception('Sign out failed: $e');
     }
@@ -242,7 +252,10 @@ class AuthRepository {
   // Update user profile
   Future<void> updateUserProfile(UserModel user) async {
     try {
-      await _firestore.collection('users').doc(user.id).update(user.toJson());
+      await _firebaseService.firestore
+          .collection('users')
+          .doc(user.id)
+          .update(user.toJson());
     } catch (e) {
       throw Exception('Failed to update user profile: $e');
     }
@@ -251,12 +264,12 @@ class AuthRepository {
   // Update last login time
   Future<void> _updateLastLoginTime(String userId) async {
     try {
-      await _firestore.collection('users').doc(userId).update({
+      await _firebaseService.firestore.collection('users').doc(userId).update({
         'lastLoginAt': DateTime.now().toIso8601String(),
       });
     } catch (e) {
       // Log error but don't throw as it's not critical
-      print('Failed to update last login time: $e');
+      // print('Failed to update last login time: $e');
     }
   }
 
