@@ -7,6 +7,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app/routes.dart';
 import 'core/constants/string_constants.dart';
+import 'core/services/crashlytics_service.dart';
+import 'core/services/firebase_service.dart';
 import 'core/services/notification_service.dart';
 import 'core/themes/app_theme.dart';
 import 'firebase_options.dart';
@@ -32,8 +34,14 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    // Initialize Firebase services
+    await FirebaseService.instance.initialize();
+
     // Initialize Firebase Messaging background handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    // Initialize Crashlytics for error logging
+    await CrashlyticsService.instance.initialize();
 
     // Initialize Hive for local storage
     await Hive.initFlutter();
@@ -47,7 +55,19 @@ void main() async {
         child: SafeDriverApp(),
       ),
     );
-  } catch (error) {
+  } catch (error, stackTrace) {
+    // Log error to Crashlytics if available
+    try {
+      await CrashlyticsService.instance.logError(
+        error,
+        stackTrace,
+        reason: 'App initialization failed',
+        fatal: true,
+      );
+    } catch (_) {
+      // Crashlytics logging failed, continue with normal error handling
+    }
+
     // Handle initialization errors
     debugPrint('Initialization error: $error');
     runApp(const SafeDriverErrorApp());
