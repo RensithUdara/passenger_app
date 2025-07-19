@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:719842751658:android:c1b794fb9edad4d2514cd3",
         "android_client_info": {
-          "package_name": "com.example.passenger_app"
+          "package_name": "com.safedriver.passenger"
         }
       },
       "oauth_client": [],
