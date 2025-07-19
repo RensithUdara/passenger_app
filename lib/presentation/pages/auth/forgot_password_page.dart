@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/color_constants.dart';
 import '../../../core/constants/string_constants.dart';
-import '../../../providers/simple_providers.dart';
+import '../../../providers/app_providers.dart';
 import '../../widgets/common/custom_button.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/common/loading_widget.dart';
