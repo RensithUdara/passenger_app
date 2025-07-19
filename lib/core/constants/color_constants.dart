@@ -1,80 +1,123 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Primary Colors
-  static const Color primaryColor = Color(0xFF2196F3); // Blue
-  static const Color primaryLight = Color(0xFF64B5F6);
-  static const Color primaryDark = Color(0xFF1976D2);
-  static const Color primaryVariant = Color(0xFF3F51B5);
+  // Professional Primary Colors - Modern Blue Spectrum
+  static const Color primaryColor = Color(0xFF2563EB); // Professional Blue
+  static const Color primaryLight = Color(0xFF3B82F6);
+  static const Color primaryDark = Color(0xFF1D4ED8);
+  static const Color primaryVariant = Color(0xFF1E40AF);
+  static const Color primaryGradientStart = Color(0xFF6366F1); // Indigo
+  static const Color primaryGradientEnd = Color(0xFF3B82F6); // Blue
 
-  // Secondary Colors
-  static const Color secondaryColor = Color(0xFF4CAF50); // Green
-  static const Color secondaryLight = Color(0xFF81C784);
-  static const Color secondaryDark = Color(0xFF388E3C);
+  // Accent Colors - Premium Purple & Teal
+  static const Color accentColor = Color(0xFF8B5CF6); // Professional Purple
+  static const Color accentLight = Color(0xFFA78BFA);
+  static const Color accentDark = Color(0xFF7C3AED);
+  static const Color tealAccent = Color(0xFF06B6D4); // Modern Teal
 
-  // Safety Colors
-  static const Color safeColor = Color(0xFF4CAF50); // Green
-  static const Color warningColor = Color(0xFFFF9800); // Orange
-  static const Color dangerColor = Color(0xFFF44336); // Red
-  static const Color criticalColor = Color(0xFF9C27B0); // Purple
+  // Modern Secondary Colors - Success Green
+  static const Color secondaryColor = Color(0xFF10B981); // Emerald Green
+  static const Color secondaryLight = Color(0xFF34D399);
+  static const Color secondaryDark = Color(0xFF059669);
+
+  // Enhanced Safety Colors
+  static const Color safeColor = Color(0xFF10B981); // Emerald Green
+  static const Color warningColor = Color(0xFFF59E0B); // Amber
+  static const Color dangerColor = Color(0xFFEF4444); // Red
+  static const Color criticalColor = Color(0xFFDC2626); // Dark Red
 
   // Status Colors
-  static const Color successColor = Color(0xFF4CAF50);
-  static const Color errorColor = Color(0xFFF44336);
-  static const Color infoColor = Color(0xFF2196F3);
-  static const Color warningColorAlt = Color(0xFFFF9800);
+  static const Color successColor = Color(0xFF10B981);
+  static const Color errorColor = Color(0xFFEF4444);
+  static const Color infoColor = Color(0xFF3B82F6);
+  static const Color warningColorAlt = Color(0xFFF59E0B);
 
-  // Neutral Colors
+  // Professional Neutral Colors
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
-  static const Color grey = Color(0xFF9E9E9E);
-  static const Color greyLight = Color(0xFFE0E0E0);
-  static const Color greyDark = Color(0xFF424242);
-  static const Color greyExtraLight = Color(0xFFF5F5F5);
+  static const Color grey = Color(0xFF6B7280);
+  static const Color greyLight = Color(0xFFF3F4F6);
+  static const Color greyDark = Color(0xFF374151);
+  static const Color greyExtraLight = Color(0xFFFAFAFA);
+  static const Color greyMedium = Color(0xFF9CA3AF);
 
-  // Background Colors
-  static const Color backgroundColor = Color(0xFFFAFAFA);
+  // Modern Background Colors
+  static const Color backgroundColor = Color(0xFFF9FAFB);
   static const Color surfaceColor = Color(0xFFFFFFFF);
   static const Color cardColor = Color(0xFFFFFFFF);
-  static const Color scaffoldBackground = Color(0xFFF5F5F5);
+  static const Color scaffoldBackground = Color(0xFFF3F4F6);
+  static const Color glassBackground = Color(0x1AFFFFFF);
 
-  // Text Colors
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color textSecondary = Color(0xFF757575);
-  static const Color textHint = Color(0xFFBDBDBD);
-  static const Color textDisabled = Color(0xFF9E9E9E);
+  // Enhanced Text Colors - Modern Typography
+  static const Color textPrimary = Color(0xFF111827); // Dark Grey
+  static const Color textSecondary = Color(0xFF6B7280); // Medium Grey
+  static const Color textHint = Color(0xFF9CA3AF); // Light Grey
+  static const Color textDisabled = Color(0xFFD1D5DB); // Very Light Grey
   static const Color textOnPrimary = Color(0xFFFFFFFF);
+  static const Color textAccent = Color(0xFF2563EB); // Primary Blue
+  static const Color textOnCard = Color(0xFF374151); // Card Text
 
-  // Dark Theme Colors
-  static const Color darkBackground = Color(0xFF121212);
-  static const Color darkSurface = Color(0xFF1E1E1E);
-  static const Color darkCard = Color(0xFF2C2C2C);
-  static const Color darkTextPrimary = Color(0xFFFFFFFF);
-  static const Color darkTextSecondary = Color(0xFFB3B3B3);
+  // Premium Dark Theme Colors
+  static const Color darkBackground = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkCard = Color(0xFF334155);
+  static const Color darkTextPrimary = Color(0xFFF8FAFC);
+  static const Color darkTextSecondary = Color(0xFFCBD5E1);
 
-  // Gradient Colors
+  // Professional Gradient Collections
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [primaryColor, primaryDark],
+    colors: [primaryGradientStart, primaryGradientEnd],
+    stops: [0.0, 1.0],
+  );
+
+  static const LinearGradient accentGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [accentColor, accentDark],
+    stops: [0.0, 1.0],
   );
 
   static const LinearGradient successGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [successColor, Color(0xFF2E7D32)],
+    colors: [successColor, secondaryDark],
+    stops: [0.0, 1.0],
   );
 
   static const LinearGradient warningGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [warningColor, Color(0xFFE65100)],
+    colors: [warningColor, Color(0xFFEA580C)],
+    stops: [0.0, 1.0],
   );
 
   static const LinearGradient dangerGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [dangerColor, Color(0xFFD32F2F)],
+    colors: [dangerColor, criticalColor],
+    stops: [0.0, 1.0],
+  );
+
+  // Glass Morphism Effects
+  static const LinearGradient glassGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0x1AFFFFFF),
+      Color(0x0DFFFFFF),
+    ],
+  );
+
+  // Premium Card Gradients
+  static const LinearGradient cardGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFFFFFFFF),
+      Color(0xFFFAFBFF),
+    ],
   );
 
   // Bus Status Colors
