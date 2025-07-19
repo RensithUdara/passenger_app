@@ -1,0 +1,210 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions for authentication and authorization
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidUserData() {
+      return request.resource.data.keys().hasAll(['email', 'name', 'phone', 'createdAt']) &&
+             request.resource.data.email is string &&
+             request.resource.data.name is string &&
+             request.resource.data.phone is string &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
+    function isValidTripData() {
+      return request.resource.data.keys().hasAll(['passengerId', 'pickup', 'destination', 'status', 'createdAt']) &&
+             request.resource.data.passengerId is string &&
+             request.resource.data.pickup is map &&
+             request.resource.data.destination is map &&
+             request.resource.data.status is string &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
+    function isValidFeedbackData() {
+      return request.resource.data.keys().hasAll(['userId', 'rating', 'comment', 'createdAt']) &&
+             request.resource.data.userId is string &&
+             request.resource.data.rating is number &&
+             request.resource.data.rating >= 1 && request.resource.data.rating <= 5 &&
+             request.resource.data.comment is string &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
+    // Users collection - users can only access their own data
+    match /users/{userId} {
+      allow read, write: if isOwner(userId) && isValidUserData();
+      allow create: if isAuthenticated() && isValidUserData() && 
+                    request.auth.uid == userId;
+    }
+    
+    // User profiles collection - extended user information
+    match /userProfiles/{userId} {
+      allow read, write: if isOwner(userId);
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // User preferences collection
+    match /userPreferences/{userId} {
+      allow read, write: if isOwner(userId);
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Emergency contacts collection
+    match /emergencyContacts/{userId} {
+      allow read, write: if isOwner(userId);
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Trips collection - passengers can only access their own trips
+    match /trips/{tripId} {
+      allow read: if isAuthenticated() && 
+                  (resource.data.passengerId == request.auth.uid ||
+                   resource.data.driverId == request.auth.uid);
+      allow create: if isAuthenticated() && 
+                    isValidTripData() &&
+                    request.resource.data.passengerId == request.auth.uid;
+      allow update: if isAuthenticated() && 
+                    (resource.data.passengerId == request.auth.uid ||
+                     resource.data.driverId == request.auth.uid) &&
+                    // Only allow updating certain fields
+                    (!request.resource.data.diff(resource.data).affectedKeys()
+                     .hasAny(['passengerId', 'createdAt']));
+    }
+    
+    // Trip history collection - read-only for trip participants
+    match /tripHistory/{tripId} {
+      allow read: if isAuthenticated() && 
+                  (resource.data.passengerId == request.auth.uid ||
+                   resource.data.driverId == request.auth.uid);
+      allow write: if false; // Trip history is managed by backend
+    }
+    
+    // Feedback collection - users can only create and read their own feedback
+    match /feedback/{feedbackId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && 
+                    isValidFeedbackData() &&
+                    request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false; // Feedback cannot be modified after creation
+    }
+    
+    // Safety alerts collection - read-only for all authenticated users
+    match /safetyAlerts/{alertId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Safety alerts are managed by backend
+    }
+    
+    // Driver locations collection - read-only for passengers
+    match /driverLocations/{driverId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Driver locations are managed by driver app
+    }
+    
+    // Notifications collection - users can only access their own notifications
+    match /notifications/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if false; // Notifications are managed by backend
+      
+      // Sub-collection for individual notifications
+      match /messages/{messageId} {
+        allow read: if isOwner(userId);
+        allow update: if isOwner(userId) && 
+                      // Only allow marking as read
+                      request.resource.data.diff(resource.data).affectedKeys()
+                      .hasOnly(['isRead', 'readAt']);
+        allow write: if false; // Messages are created by backend
+      }
+    }
+    
+    // App settings collection - read-only for all authenticated users
+    match /appSettings/{settingId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // App settings are managed by backend
+    }
+    
+    // Support tickets collection - users can only access their own tickets
+    match /supportTickets/{ticketId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && 
+                    request.resource.data.userId == request.auth.uid &&
+                    request.resource.data.keys().hasAll(['userId', 'subject', 'description', 'status', 'createdAt']);
+      allow update: if isAuthenticated() && 
+                    resource.data.userId == request.auth.uid &&
+                    // Only allow updating description and adding messages
+                    (!request.resource.data.diff(resource.data).affectedKeys()
+                     .hasAny(['userId', 'createdAt', 'status']));
+    }
+    
+    // Payment methods collection - users can only access their own payment methods
+    match /paymentMethods/{userId} {
+      allow read, write: if isOwner(userId);
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Sub-collection for individual payment methods
+      match /methods/{methodId} {
+        allow read, write: if isOwner(userId);
+        allow create: if isAuthenticated() && request.auth.uid == userId;
+      }
+    }
+    
+    // Ride requests collection - temporary collection for matching
+    match /rideRequests/{requestId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+                    request.resource.data.passengerId == request.auth.uid;
+      allow update: if isAuthenticated() && 
+                    resource.data.passengerId == request.auth.uid;
+      allow delete: if isAuthenticated() && 
+                    resource.data.passengerId == request.auth.uid;
+    }
+    
+    // Chat messages collection - only participants can access
+    match /chats/{chatId} {
+      allow read: if isAuthenticated() && 
+                  (resource.data.passengerId == request.auth.uid ||
+                   resource.data.driverId == request.auth.uid);
+      allow write: if false; // Chat metadata is managed by backend
+      
+      // Sub-collection for individual messages
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() && 
+                    (get(/databases/$(database)/documents/chats/$(chatId)).data.passengerId == request.auth.uid ||
+                     get(/databases/$(database)/documents/chats/$(chatId)).data.driverId == request.auth.uid);
+        allow create: if isAuthenticated() && 
+                      request.resource.data.senderId == request.auth.uid &&
+                      request.resource.data.keys().hasAll(['senderId', 'message', 'timestamp']) &&
+                      (get(/databases/$(database)/documents/chats/$(chatId)).data.passengerId == request.auth.uid ||
+                       get(/databases/$(database)/documents/chats/$(chatId)).data.driverId == request.auth.uid);
+        allow update, delete: if false; // Messages cannot be modified
+      }
+    }
+    
+    // Analytics events collection - users can only create their own events
+    match /analyticsEvents/{eventId} {
+      allow create: if isAuthenticated() && 
+                    request.resource.data.userId == request.auth.uid &&
+                    request.resource.data.keys().hasAll(['userId', 'eventType', 'timestamp']);
+      allow read, update, delete: if false; // Analytics are write-only
+    }
+    
+    // Crash reports collection - users can only create their own reports
+    match /crashReports/{reportId} {
+      allow create: if isAuthenticated() && 
+                    request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if false; // Crash reports are write-only
+    }
+    
+    // Default deny rule for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
