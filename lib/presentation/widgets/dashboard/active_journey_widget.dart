@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/constants/color_constants.dart';
-import '../../../core/constants/string_constants.dart';
 import '../../controllers/dashboard_controller.dart';
 
 class ActiveJourneyWidget extends ConsumerWidget {
@@ -12,13 +12,20 @@ class ActiveJourneyWidget extends ConsumerWidget {
     final dashboardState = ref.watch(dashboardControllerProvider);
     final activeJourney = dashboardState.activeJourney;
 
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: activeJourney != null
             ? _buildActiveJourneyContent(context, activeJourney)
             : _buildNoActiveJourneyContent(context),
@@ -167,7 +174,7 @@ class ActiveJourneyWidget extends ConsumerWidget {
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // Navigate to live tracking
+                  Navigator.pushNamed(context, '/live-tracking');
                 },
                 icon: const Icon(Icons.my_location, size: 18),
                 label: const Text('Track Live'),
@@ -185,7 +192,12 @@ class ActiveJourneyWidget extends ConsumerWidget {
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () {
-                  // Share journey
+                  // TODO: Implement share functionality
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Share functionality will be implemented'),
+                    ),
+                  );
                 },
                 icon: const Icon(Icons.share, size: 18),
                 label: const Text('Share'),
@@ -207,44 +219,92 @@ class ActiveJourneyWidget extends ConsumerWidget {
   Widget _buildNoActiveJourneyContent(BuildContext context) {
     return Column(
       children: [
-        Icon(
-          Icons.directions_bus_outlined,
-          size: 64,
-          color: AppColors.textSecondary.withOpacity(0.5),
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.primaryColor.withOpacity(0.1),
+                AppColors.primaryColor.withOpacity(0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: AppColors.primaryColor.withOpacity(0.2),
+              width: 2,
+            ),
+          ),
+          child: const Icon(
+            Icons.directions_bus_outlined,
+            size: 40,
+            color: AppColors.primaryColor,
+          ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
         const Text(
-          AppStrings.noActiveJourney,
+          'No Active Journey',
           style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textSecondary,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          'Scan a QR code or search for a bus to start tracking',
+        const Text(
+          'Scan a QR code or search for a bus\nto start tracking your journey',
           style: TextStyle(
             fontSize: 14,
-            color: AppColors.textSecondary.withOpacity(0.7),
+            color: AppColors.textSecondary,
+            height: 1.5,
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 16),
-        ElevatedButton.icon(
-          onPressed: () {
-            // Navigate to QR scanner or bus search
-          },
-          icon: const Icon(Icons.qr_code_scanner, size: 18),
-          label: const Text('Scan QR Code'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryColor,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+        const SizedBox(height: 24),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/qr-scanner');
+                },
+                icon: const Icon(Icons.qr_code_scanner, size: 20),
+                label: const Text('Scan QR'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 0,
+                ),
+              ),
             ),
-          ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/bus-search');
+                },
+                icon: const Icon(Icons.search, size: 20),
+                label: const Text('Search'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.primaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  side: const BorderSide(
+                    color: AppColors.primaryColor,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
