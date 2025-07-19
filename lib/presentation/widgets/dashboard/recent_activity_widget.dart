@@ -11,13 +11,20 @@ class RecentActivityWidget extends ConsumerWidget {
     final dashboardState = ref.watch(dashboardControllerProvider);
     final recentActivity = dashboardState.recentActivity;
 
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,15 +39,25 @@ class RecentActivityWidget extends ConsumerWidget {
                     color: AppColors.textPrimary,
                   ),
                 ),
-                TextButton(
+                TextButton.icon(
                   onPressed: () {
                     // Navigate to full activity history
                   },
-                  child: const Text('View All'),
+                  icon: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                  ),
+                  label: const Text('View All'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.primaryColor,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             if (recentActivity.isEmpty)
               _buildEmptyState()
             else
@@ -61,25 +78,46 @@ class RecentActivityWidget extends ConsumerWidget {
       padding: const EdgeInsets.all(32),
       child: Column(
         children: [
-          Icon(
-            Icons.history,
-            size: 48,
-            color: AppColors.textSecondary.withOpacity(0.5),
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.primaryColor.withOpacity(0.1),
+                  AppColors.primaryColor.withOpacity(0.05),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: AppColors.primaryColor.withOpacity(0.2),
+                width: 2,
+              ),
+            ),
+            child: Icon(
+              Icons.history_outlined,
+              size: 30,
+              color: AppColors.primaryColor,
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
             'No recent activity',
             style: TextStyle(
               fontSize: 16,
-              color: AppColors.textSecondary,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Your recent bus journeys and activities will appear here',
+            'Start your first journey with SafeDriver\nto see your activity here',
             style: TextStyle(
               fontSize: 14,
-              color: AppColors.textSecondary.withOpacity(0.7),
+              color: AppColors.textSecondary,
+              height: 1.5,
             ),
             textAlign: TextAlign.center,
           ),
