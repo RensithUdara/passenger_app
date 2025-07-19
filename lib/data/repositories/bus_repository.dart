@@ -314,6 +314,20 @@ class BusRepository {
       throw BusRepositoryException('Failed to get bus by QR code: $e');
     }
   }
+
+  /// Get bus location stream for real-time tracking
+  Stream<BusModel?> getBusLocationStream(String busId) {
+    return _firebaseService.firestore
+        .collection(_collection)
+        .doc(busId)
+        .snapshots()
+        .map((doc) {
+      if (doc.exists && doc.data() != null) {
+        return BusModel.fromJson({...doc.data()!, 'id': doc.id});
+      }
+      return null;
+    });
+  }
 }
 
 // Custom exception class
