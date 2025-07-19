@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../../data/repositories/auth_repository.dart';
+
 import '../../data/models/user_model.dart';
+import '../../data/repositories/auth_repository.dart';
 
 // Auth State
 class AuthState {
@@ -128,6 +128,20 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  Future<void> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) async {
+    final fullName = '$firstName $lastName';
+    final success = await register(email, password, fullName, phoneNumber);
+    if (!success) {
+      throw Exception(state.error ?? 'Registration failed');
+    }
+  }
+
   Future<bool> signInWithGoogle() async {
     state = state.copyWith(isLoading: true, error: null);
 
@@ -195,6 +209,21 @@ class AuthController extends StateNotifier<AuthState> {
         isLoading: false,
         error: e.toString(),
       );
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      await _authRepository.resetPassword(email);
+      state = state.copyWith(isLoading: false);
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      );
+      throw Exception(e.toString());
     }
   }
 
