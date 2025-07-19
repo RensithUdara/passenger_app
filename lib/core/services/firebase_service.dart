@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'crashlytics_service.dart';
 
 class FirebaseService {
   static FirebaseService? _instance;
@@ -71,6 +72,13 @@ class FirebaseService {
 
       return true;
     } catch (e) {
+      // Log error to Crashlytics
+      CrashlyticsService.instance.logError(
+        e,
+        StackTrace.current,
+        reason: 'Firebase initialization failed',
+        context: {'service': 'FirebaseService'},
+      );
       print('Firebase initialization failed: $e');
       return false;
     }
@@ -85,6 +93,16 @@ class FirebaseService {
         cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
       );
     } catch (e) {
+      // Log error to Crashlytics
+      CrashlyticsService.instance.logError(
+        e,
+        StackTrace.current,
+        reason: 'Firestore configuration error',
+        context: {
+          'service': 'FirebaseService',
+          'operation': 'configureFirestore'
+        },
+      );
       print('Firestore configuration error: $e');
     }
   }
