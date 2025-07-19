@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../presentation/pages/auth/forgot_password_page.dart';
 import '../presentation/pages/auth/login_page.dart';
 import '../presentation/pages/auth/otp_verification_page.dart';
 import '../presentation/pages/auth/register_page.dart';
@@ -12,16 +13,20 @@ import '../presentation/pages/dashboard/dashboard_page.dart';
 import '../presentation/pages/driver/driver_history_page.dart';
 import '../presentation/pages/driver/driver_performance_page.dart';
 import '../presentation/pages/driver/driver_profile_page.dart';
+import '../presentation/pages/driver/driver_info_page.dart';
 import '../presentation/pages/feedback/feedback_history_page.dart';
 import '../presentation/pages/feedback/feedback_page.dart';
 import '../presentation/pages/not_found_page.dart';
 import '../presentation/pages/profile/notifications_page.dart';
 import '../presentation/pages/profile/settings_page.dart';
+import '../presentation/pages/profile/trip_history_page.dart';
 import '../presentation/pages/profile/user_profile_page.dart';
 import '../presentation/pages/qr/qr_scanner_page.dart';
+import '../presentation/pages/hazard/hazard_zone_intelligence_page.dart';
 import '../presentation/pages/safety/emergency_page.dart';
 import '../presentation/pages/safety/hazard_zones_page.dart';
 import '../presentation/pages/safety/safety_alerts_page.dart';
+import '../presentation/pages/safety/safety_hub_page.dart';
 
 /// Application route configuration and navigation management
 class AppRoutes {
@@ -29,6 +34,7 @@ class AppRoutes {
   static const String splash = '/';
   static const String login = '/login';
   static const String register = '/register';
+  static const String forgotPassword = '/forgot-password';
   static const String otpVerification = '/otp-verification';
   static const String dashboard = '/dashboard';
   static const String notifications = '/notifications';
@@ -46,6 +52,7 @@ class AppRoutes {
 
   // Safety routes
   static const String safetyAlerts = '/safety-alerts';
+  static const String safetyHub = '/safety-hub';
   static const String hazardZones = '/hazard-zones';
   static const String emergency = '/emergency';
 
@@ -53,8 +60,17 @@ class AppRoutes {
   static const String feedback = '/feedback';
   static const String feedbackHistory = '/feedback-history';
 
+  // Trip routes
+  static const String tripHistory = '/trip-history';
+
   // QR routes
   static const String qrScanner = '/qr-scanner';
+
+  // Driver Info routes
+  static const String driverInfo = '/driver-info';
+
+  // Hazard Zone routes
+  static const String hazardZoneIntelligence = '/hazard-zone-intelligence';
 
   // Profile routes
   static const String userProfile = '/user-profile';
@@ -78,6 +94,12 @@ class AppRoutes {
       case register:
         return MaterialPageRoute(
           builder: (_) => const RegisterPage(),
+          settings: settings,
+        );
+
+      case forgotPassword:
+        return MaterialPageRoute(
+          builder: (_) => const ForgotPasswordPage(),
           settings: settings,
         );
 
@@ -166,6 +188,12 @@ class AppRoutes {
           settings: settings,
         );
 
+      case safetyHub:
+        return MaterialPageRoute(
+          builder: (_) => const SafetyHubPage(),
+          settings: settings,
+        );
+
       case hazardZones:
         return MaterialPageRoute(
           builder: (_) => const HazardZonesPage(),
@@ -198,6 +226,28 @@ class AppRoutes {
       case qrScanner:
         return MaterialPageRoute(
           builder: (_) => const QrScannerPage(),
+          settings: settings,
+        );
+
+      case driverInfo:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute(
+          builder: (_) => DriverInfoPage(
+            driverId: args?['driverId'] ?? 'demo_driver_001',
+            driverName: args?['driverName'] ?? 'John Doe',
+          ),
+          settings: settings,
+        );
+
+      case hazardZoneIntelligence:
+        return MaterialPageRoute(
+          builder: (_) => const HazardZoneIntelligencePage(),
+          settings: settings,
+        );
+
+      case tripHistory:
+        return MaterialPageRoute(
+          builder: (_) => const TripHistoryPage(),
           settings: settings,
         );
 
