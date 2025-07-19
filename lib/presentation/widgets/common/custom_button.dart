@@ -33,9 +33,23 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isEnabled = onPressed != null && !isLoading;
 
-    return SizedBox(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
       width: width,
       height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        boxShadow: isEnabled && !isOutlined
+            ? [
+                BoxShadow(
+                  color: (backgroundColor ?? AppColors.primaryColor)
+                      .withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ]
+            : [],
+      ),
       child: ElevatedButton(
         onPressed: isEnabled ? onPressed : null,
         style: ElevatedButton.styleFrom(
@@ -44,24 +58,30 @@ class CustomButton extends StatelessWidget {
               : backgroundColor ?? AppColors.primaryColor,
           foregroundColor:
               isOutlined ? AppColors.primaryColor : textColor ?? Colors.white,
-          elevation: isOutlined ? 0 : 2,
+          elevation: 0,
+          shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
             side: isOutlined
-                ? const BorderSide(color: AppColors.primaryColor, width: 2)
+                ? BorderSide(
+                    color: isEnabled
+                        ? AppColors.primaryColor
+                        : AppColors.textDisabled,
+                    width: 2,
+                  )
                 : BorderSide.none,
           ),
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
+          padding: padding ?? const EdgeInsets.symmetric(horizontal: 20),
           disabledBackgroundColor:
-              isOutlined ? Colors.transparent : Colors.grey.shade300,
-          disabledForegroundColor: Colors.grey.shade500,
+              isOutlined ? Colors.transparent : AppColors.greyLight,
+          disabledForegroundColor: AppColors.textDisabled,
         ),
         child: isLoading
             ? SizedBox(
-                width: 20,
-                height: 20,
+                width: 22,
+                height: 22,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2,
+                  strokeWidth: 2.5,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     isOutlined ? AppColors.primaryColor : Colors.white,
                   ),
@@ -72,19 +92,20 @@ class CustomButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: 20),
-                    const SizedBox(width: 8),
+                    Icon(icon, size: 22),
+                    const SizedBox(width: 10),
                   ],
                   Text(
                     text,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
                       color: isEnabled
                           ? (isOutlined
                               ? AppColors.primaryColor
                               : textColor ?? Colors.white)
-                          : Colors.grey.shade500,
+                          : AppColors.textDisabled,
                     ),
                   ),
                 ],
