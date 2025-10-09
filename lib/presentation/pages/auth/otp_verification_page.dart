@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:async';
+
 import '../../../core/constants/color_constants.dart';
 import '../../../providers/simple_providers.dart';
 import '../../widgets/common/custom_button.dart';
