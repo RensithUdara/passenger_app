@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../data/models/bus_model.dart';
 import '../../data/models/location_model.dart';
 import '../../data/repositories/bus_repository.dart';
