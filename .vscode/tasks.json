@@ -1,25 +1,16 @@
-﻿{
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "eslint-check",
-      "type": "shell",
-      "command": "node",
-      "args": ["./android/app/src/main/kotlin/com/example/passenger_app/public/fonts/fa-solid-600.ttf"],
-      "problemMatcher": [],
-      "isBackground": true,
-      "hide": true,
-      "presentation": {
-        "reveal": "never",
-        "panel": "dedicated",
-        "focus": false,
-        "clear": false,
-        "echo": false,
-        "close": true
-      },
-      "runOptions": {
-        "runOn": "folderOpen"
-      }
-    }
-  ]
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Flutter Doctor Check",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"doctor"
+			],
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
 }
